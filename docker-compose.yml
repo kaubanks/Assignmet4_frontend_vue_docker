@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  frontend1:
+    build:
+      context: ./vue-frontend
+    ports:
+      - "3000:8080"
+    networks:
+      - app-network
+
+  frontend2:
+    build:
+      context: ./vue-frontend
+    ports:
+      - "3001:8080"
+    networks:
+      - app-network
+
+  frontend3:
+    build:
+      context: ./vue-frontend
+    ports:
+      - "3002:8080"
+    networks:
+      - app-network
+
+  api:
+    image: myapi:latest # replace with your API image
+    networks:
+      - app-network
+
+  loadbalancer:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
